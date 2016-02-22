@@ -21,14 +21,14 @@ USB Usb;
 XBOXUSB Xbox(&Usb);
 
 //Define Starting positions
-double Bottom = 85,
-LLift  = 100,
-RLift  = 80,
-Top  = 30,
-four   = 90,
-five   = 180,
-temp   = 0,
-rate   = 5;//Equivilent to MS delay
+double Main = 100,
+       Arm2  = 92,
+       Arm3  = 93,
+       Height  = 90,
+       Rotate   = 90,
+       End   = 85,
+       temp   = 0,
+       rate   = 5;//Equivilent to MS delay
 
 
 void setup() {
@@ -42,57 +42,70 @@ void setup() {
   Serial.println(F("\r\nXBOX USB Library Started"));
 }
 void loop() {
-  //Modify Zone
   Usb.Task();
+
+  //Axis
   if (Xbox.getAnalogHat(LeftHatX) > 7500 || Xbox.getAnalogHat(LeftHatX) < -7500 || Xbox.getAnalogHat(LeftHatY) > 7500 || Xbox.getAnalogHat(LeftHatY) < -7500 || Xbox.getAnalogHat(RightHatX) > 7500 || Xbox.getAnalogHat(RightHatX) < -7500 || Xbox.getAnalogHat(RightHatY) > 7500 || Xbox.getAnalogHat(RightHatY) < -7500) {
     if (Xbox.getAnalogHat(LeftHatX) > 7500 || Xbox.getAnalogHat(LeftHatX) < -7500) {
-      Bottom-=Xbox.getAnalogHat(LeftHatX)/32768.0/rate;
+      Main -= Xbox.getAnalogHat(LeftHatX) / 32768.0 / rate;
     }
-    if (Xbox.getAnalogHat(LeftHatY) > 7500 || Xbox.getAnalogHat(LeftHatY) < -7500) {
-      LLift-=Xbox.getAnalogHat(LeftHatY)/32768.0/rate;
-      RLift+=Xbox.getAnalogHat(LeftHatY)/32768.0/rate;
-      Top+=Xbox.getAnalogHat(LeftHatY)/32768.0/rate;
-    }
+    if (Xbox.getAnalogHat(LeftHatY) > 7500 || Xbox.getAnalogHat(LeftHatY) < -7500) {}
     if (Xbox.getAnalogHat(RightHatX) > 7500 || Xbox.getAnalogHat(RightHatX) < -7500) {
-      four+=Xbox.getAnalogHat(RightHatX)/32768.0/rate;
+      Rotate += Xbox.getAnalogHat(RightHatX) / 32768.0 / rate;
     }
-    if (Xbox.getAnalogHat(RightHatY) > 7500 || Xbox.getAnalogHat(RightHatY) < -7500) {
-      LLift+=Xbox.getAnalogHat(RightHatY)/32768.0/rate;
-      RLift-=Xbox.getAnalogHat(RightHatY)/32768.0/rate;
-    }
-    Serial.println(Xbox.getAnalogHat(RightHatX)/32768.0/rate);
   }
+  if (Xbox.getAnalogHat(RightHatY) > 7500 || Xbox.getAnalogHat(RightHatY) < -7500) {
+    Height = map(Xbox.getAnalogHat(RightHatY), -32767, 32768, 87, 99);
+  } else {
+    Height = 90;
+  }
+
+  //Buttons
+  if (Xbox.getButtonPress(X)) {Arm3 = 95;}
+  else if (Xbox.getButtonPress(B)) {Arm3 = 91.5;}
+  else {Arm3 = 93;}
+
+  if (Xbox.getButtonPress(LEFT)) {Arm2 = 97;}
+  else if (Xbox.getButtonPress(RIGHT)) {Arm2 = 85;}
+  else {Arm2 = 92;}
+  Serial.println(Arm3);
+
+  if (Xbox.getButtonPress(L1)) {End -= 1 / rate;}
+  else if (Xbox.getButtonPress(R1)) {End += 1 / rate;}
 
 
   //Check Zone
-  Bottom = check(Bottom,0,180);
-  LLift = check(LLift,0,180);
-  RLift = check(RLift,0,180);
-  Top = check(Top,0,180);
-  four = check(four,0,180);
-  five = check(five,0,180);
+  Main = check(Main, 0, 180);
+  Arm2 = check(Arm2, 50, 125);
+  Arm3 = check(Arm3, 85, 100);
+  Height = check(Height, 87, 99);
+  Rotate = check(Rotate, 27, 150);
+  End = check(End, 11, 85);
 
   //Implement Zone
-  setServo(0,Bottom);
-  setServo(1,LLift);
-  setServo(2,RLift);
-  setServo(3,Top);
-  setServo(4,four);
-  Serial.println(String(LLift)+", "+String(RLift));
+  setServo(0, Main);
+  setServo(1, Arm2);
+  setServo(2, Arm3);
+  setServo(3, Height);
+  setServo(4, End);
 }
 //32768 max axis input
 
-void setServo(int servonum, int degrees){
+void setServo(int servonum, int degrees) {
   temp  = map(degrees, 0, 180, SERVOMIN, SERVOMAX);
   //Serial.println(degrees);
-  pwm.setPWM(servonum,0,temp);
+  pwm.setPWM(servonum, 0, temp);
 }
-double check(double input, int min, int max){
-  if(min>max){
-    Serial.println(String("Min of "+String(min)+" is greater than Max of "+String(max)));
+double check(double input, int min, int max) {
+  if (min > max) {
+    Serial.println(String("Min of " + String(min) + " is greater than Max of " + String(max)));
   }
   //Serial.println(String(input)+" "+String(min)+" "+String(max));
-  if(input>max){input=max;}
-  if(input<min){input=min;}
+  if (input > max) {
+    input = max;
+  }
+  if (input < min) {
+    input = min;
+  }
   return input;
 }
