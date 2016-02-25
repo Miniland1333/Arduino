@@ -55,7 +55,7 @@ void loop() {
     }
   }
   if (Xbox.getAnalogHat(RightHatY) > 7500 || Xbox.getAnalogHat(RightHatY) < -7500) {
-    Height = map(Xbox.getAnalogHat(RightHatY), -32767, 32768, 87, 99);
+    Height = map(Xbox.getAnalogHat(RightHatY), -32767, 32768, 86, 99);
   } else {
     Height = 90;
   }
@@ -68,17 +68,17 @@ void loop() {
   if (Xbox.getButtonPress(LEFT)) {Arm2 = 97;}
   else if (Xbox.getButtonPress(RIGHT)) {Arm2 = 85;}
   else {Arm2 = 92;}
-  Serial.println(Arm3);
 
-  if (Xbox.getButtonPress(L1)) {End -= 1 / rate;}
-  else if (Xbox.getButtonPress(R1)) {End += 1 / rate;}
+  if (Xbox.getButtonPress(L2)) {End += 1 / rate;}
+  else if (Xbox.getButtonPress(R2)) {End -= 1 / rate;}
+  Serial.println(Height); 
 
 
   //Check Zone
   Main = check(Main, 0, 180);
   Arm2 = check(Arm2, 50, 125);
   Arm3 = check(Arm3, 85, 100);
-  Height = check(Height, 87, 99);
+  Height = check(Height, 86, 99);
   Rotate = check(Rotate, 27, 150);
   End = check(End, 11, 85);
 
@@ -87,7 +87,8 @@ void loop() {
   setServo(1, Arm2);
   setServo(2, Arm3);
   setServo(3, Height);
-  setServo(4, End);
+  setServo(4, Rotate);
+  setServo(5, End);
 }
 //32768 max axis input
 
