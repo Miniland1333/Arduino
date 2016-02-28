@@ -21,7 +21,7 @@ USB Usb;
 XBOXUSB Xbox(&Usb);
 
 //Define Starting positions
-double Main = 100,
+double Main = 90,
        Arm2  = 92,
        Arm3  = 93,
        Height  = 90,
@@ -61,8 +61,8 @@ void loop() {
   }
 
   //Buttons
-  if (Xbox.getButtonPress(X)) {Arm3 = 95;}
-  else if (Xbox.getButtonPress(B)) {Arm3 = 91.5;}
+  if (Xbox.getButtonPress(X)) {Arm3 = 97;}
+  else if (Xbox.getButtonPress(B)) {Arm3 = 89;}
   else {Arm3 = 93;}
 
   if (Xbox.getButtonPress(LEFT)) {Arm2 = 97;}
@@ -71,7 +71,7 @@ void loop() {
 
   if (Xbox.getButtonPress(L2)) {End += 1 / rate;}
   else if (Xbox.getButtonPress(R2)) {End -= 1 / rate;}
-  Serial.println(Height); 
+  //Serial.println(Main); 
 
 
   //Check Zone
