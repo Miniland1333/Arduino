@@ -45,14 +45,16 @@ void loop() {
   Usb.Task();
 
   //Axis
-  if (Xbox.getAnalogHat(LeftHatX) > 7500 || Xbox.getAnalogHat(LeftHatX) < -7500 || Xbox.getAnalogHat(LeftHatY) > 7500 || Xbox.getAnalogHat(LeftHatY) < -7500 || Xbox.getAnalogHat(RightHatX) > 7500 || Xbox.getAnalogHat(RightHatX) < -7500 || Xbox.getAnalogHat(RightHatY) > 7500 || Xbox.getAnalogHat(RightHatY) < -7500) {
-    if (Xbox.getAnalogHat(LeftHatX) > 7500 || Xbox.getAnalogHat(LeftHatX) < -7500) {
-      Main -= Xbox.getAnalogHat(LeftHatX) / 32768.0 / rate;
-    }
-    if (Xbox.getAnalogHat(LeftHatY) > 7500 || Xbox.getAnalogHat(LeftHatY) < -7500) {}
-    if (Xbox.getAnalogHat(RightHatX) > 7500 || Xbox.getAnalogHat(RightHatX) < -7500) {
-      Rotate += Xbox.getAnalogHat(RightHatX) / 32768.0 / rate;
-    }
+  if (Xbox.getAnalogHat(LeftHatX) > 7500 || Xbox.getAnalogHat(LeftHatX) < -7500) {
+    //Main -= Xbox.getAnalogHat(LeftHatX) / 32768.0 / rate;
+
+    Arm2 = map(Xbox.getAnalogHat(LeftHatX), -32767, 32768, 97, 85);
+  } else {
+    Arm2 = 93;
+  }
+  if (Xbox.getAnalogHat(LeftHatY) > 7500 || Xbox.getAnalogHat(LeftHatY) < -7500) {}
+  if (Xbox.getAnalogHat(RightHatX) > 7500 || Xbox.getAnalogHat(RightHatX) < -7500) {
+    Rotate += Xbox.getAnalogHat(RightHatX) / 32768.0 / rate;
   }
   if (Xbox.getAnalogHat(RightHatY) > 7500 || Xbox.getAnalogHat(RightHatY) < -7500) {
     Height = map(Xbox.getAnalogHat(RightHatY), -32767, 32768, 84, 101);
@@ -61,17 +63,27 @@ void loop() {
   }
 
   //Buttons
-  if (Xbox.getButtonPress(X)) {Arm3 = 97;}
-  else if (Xbox.getButtonPress(B)) {Arm3 = 89;}
-  else {Arm3 = 93;}
+  if (Xbox.getButtonPress(X)) {
+    Arm3 = 97;
+  }
+  else if (Xbox.getButtonPress(B)) {
+    Arm3 = 89;
+  }
+  else {
+    Arm3 = 93;
+  }
 
-  if (Xbox.getButtonPress(LEFT)) {Arm2 = 97;}
-  else if (Xbox.getButtonPress(RIGHT)) {Arm2 = 85;}
-  else {Arm2 = 92;}
+  //  if (Xbox.getButtonPress(LEFT)) {Arm2 = 97;}
+  //  else if (Xbox.getButtonPress(RIGHT)) {Arm2 = 85;}
+  //  else {Arm2 = 92;}
 
-  if (Xbox.getButtonPress(L2)) {End += 1 / rate;}
-  else if (Xbox.getButtonPress(R2)) {End -= 1 / rate;}
-  //Serial.println(Main); 
+  if (Xbox.getButtonPress(L2)) {
+    End += 1 / rate;
+  }
+  else if (Xbox.getButtonPress(R2)) {
+    End -= 1 / rate;
+  }
+  Serial.println(Arm2);
 
 
   //Check Zone
