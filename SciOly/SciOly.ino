@@ -55,7 +55,7 @@ void loop() {
     }
   }
   if (Xbox.getAnalogHat(RightHatY) > 7500 || Xbox.getAnalogHat(RightHatY) < -7500) {
-    Height = map(Xbox.getAnalogHat(RightHatY), -32767, 32768, 86, 99);
+    Height = map(Xbox.getAnalogHat(RightHatY), -32767, 32768, 84, 101);
   } else {
     Height = 90;
   }
@@ -77,8 +77,8 @@ void loop() {
   //Check Zone
   Main = check(Main, 0, 180);
   Arm2 = check(Arm2, 50, 125);
-  Arm3 = check(Arm3, 85, 100);
-  Height = check(Height, 86, 99);
+  Arm3 = check(Arm3, 84, 101);
+  Height = check(Height, 85, 100);
   Rotate = check(Rotate, 27, 150);
   End = check(End, 11, 85);
 
