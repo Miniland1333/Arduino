@@ -57,7 +57,7 @@ void loop() {
     Rotate += Xbox.getAnalogHat(RightHatX) / 32768.0 / rate;
   }
   if (Xbox.getAnalogHat(RightHatY) > 7500 || Xbox.getAnalogHat(RightHatY) < -7500) {
-    Height = map(Xbox.getAnalogHat(RightHatY), -32767, 32768, 84, 101);
+    Height = map(Xbox.getAnalogHat(RightHatY), -32767, 32768, 79, 106);
   } else {
     Height = 90;
   }
@@ -73,9 +73,9 @@ void loop() {
     Arm3 = 93;
   }
 
-  //  if (Xbox.getButtonPress(LEFT)) {Arm2 = 97;}
-  //  else if (Xbox.getButtonPress(RIGHT)) {Arm2 = 85;}
-  //  else {Arm2 = 92;}
+  if (Xbox.getButtonPress(LEFT)) {Main += 1 / rate;}
+  else if (Xbox.getButtonPress(RIGHT)) {Main -= 1 / rate;}
+  else if (Xbox.getButtonPress(START)) {Main =90;}
 
   if (Xbox.getButtonPress(L2)) {
     End += 1 / rate;
@@ -83,14 +83,14 @@ void loop() {
   else if (Xbox.getButtonPress(R2)) {
     End -= 1 / rate;
   }
-  Serial.println(Arm2);
+  Serial.println(Main);
 
 
   //Check Zone
-  Main = check(Main, 0, 180);
+  Main = check(Main, 45, 135);
   Arm2 = check(Arm2, 50, 125);
   Arm3 = check(Arm3, 84, 101);
-  Height = check(Height, 85, 100);
+  Height = check(Height, 80, 105);
   Rotate = check(Rotate, 27, 150);
   End = check(End, 11, 85);
 
